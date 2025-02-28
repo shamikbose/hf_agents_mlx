@@ -1,0 +1,27 @@
+model: "meta-llama/Llama-3.2-3B-Instruct"
+data: "data/"
+train: true
+fine_tune_type: lora
+iters: 100
+max_seq_length : 2048
+grad_checkpoint : true
+learning_rate: 1e-4
+batch_size : 4
+steps_per_report: 5
+steps_per_eval : 20
+adapter_path : "adapters"
+
+# LoRA parameters can only be specified in a config file
+lora_parameters:
+  # The layer keys to apply LoRA to.
+
+  lora_layers: ["mlp.gate_proj","self_attn.q_proj","self_attn.o_proj","self_attn.k_proj","embed_tokens","mlp.down_proj","mlp.up_proj","self_attn.v_proj"]
+  rank: 8
+  scale: 64
+  dropout: 0.05
+
+# Schedule can only be specified in a config file, uncomment to use.
+lr_schedule:
+ name: cosine_decay
+ arguments: [1e-5, 1000, 1e-7] # passed to scheduler
+ 
